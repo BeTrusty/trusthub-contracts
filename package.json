@@ -3,10 +3,15 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
     "@nomicfoundation/hardhat-verify": "^2.0.9",
-    "hardhat": "^2.22.7"
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "ethers": "^6.13.2",
+    "hardhat": "^2.22.7",
+    "hardhat-deploy": "^0.12.4",
+    "hardhat-deploy-ethers": "^0.4.2"
   },
   "dependencies": {
     "@chainlink/contracts": "^1.2.0",
-    "@openzeppelin/contracts": "^5.0.2"
+    "@openzeppelin/contracts": "^5.0.2",
+    "dotenv": "^16.4.5"
   }
 }
