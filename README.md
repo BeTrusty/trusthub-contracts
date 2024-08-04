@@ -1,13 +1,41 @@
-# Sample Hardhat Project
+# BeTrusty - Smart Contracts
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+En este repositorio están los smart contracts del protocolo.
 
-Try running some of the following tasks:
+## Despliegue de contratos
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
+npx hardhat deploy
 ```
+
+Para desplegar en Scroll Sepolia
+
+```shell
+npx hardhat deploy --network scrollSepolia
+```
+
+## Verificar contratos
+
+Verificar contrato `BeTrusty`
+
+```shell
+npx hardhat verify --network scrollSepolia ADDRESS_DEL_CONTRATO_BE_TRUSTY PRIMER_PARAMETRO_CONSTRUCTOR SEGUNDO_PARAMETRO_CONSTRUCTOR
+```
+Verificar contrato `Verifier`
+
+```shell
+npx hardhat verify --network scrollSepolia ADDRESS_DEL_CONTRATO_VERIFIER
+```
+
+## Actualización del Verifier
+
+Se deve actualizar el address del `verifier` en el contrato `BeTrusty` ejecutando la función `updateVerifier`.
+
+## Addresses de los contratos
+
+| Contrato   | Dirección                                    |
+|------------|----------------------------------------------|
+| BeTrusty   | `0x48007bd1C17649F53D9D13ad57E8dDCd958135Dd` |
+| Verifier   | `0xA39e0B1Ac857596Ca04c06543AA8449504E3051a` |
+
+

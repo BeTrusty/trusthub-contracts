@@ -9,12 +9,14 @@ require('dotenv').config()
 const providerApiKey = process.env.ALCHEMY_API_KEY
 const deployerPrivateKey = process.env.DEPLOYER_PRIVATE_KEY || ""
 const etherscanApiKey = process.env.ETHERSCAN_API_KEY || "" // No la utilizamos para scroll sepolia
-const urlRPC = "https://rpc.ankr.com/scroll_sepolia_testnet"
+const urlRPC = "https://scroll-testnet-public.unifra.io"
+
 
 const config: HardhatUserConfig = {
   solidity: "0.8.24",
   networks: {
     scrollSepolia: {
+      gasPrice: 700000000,
       url: urlRPC,
       accounts: [deployerPrivateKey]
     }
@@ -29,8 +31,7 @@ const config: HardhatUserConfig = {
     apiKey: {
       mainnet: etherscanApiKey,
       scrollSepolia: etherscanApiKey
-    },
-    /*
+    },    
     customChains: [
       {
         network: 'scrollSepolia',
@@ -40,11 +41,10 @@ const config: HardhatUserConfig = {
           browserURL: 'https://sepolia.scrollscan.com/'
         },
       }
-    ],
-    */
+    ],    
   },
   sourcify: {
-    enabled: true,
+    enabled: false,
     apiUrl: 'https://api-sepolia.scrollscan.com/api',
     browserUrl: 'https://sepolia.scrollscan.com/'
   }

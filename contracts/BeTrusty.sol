@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.7;
+pragma solidity 0.8.24;
 
-import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {AggregatorV3Interface} from "./AggregatorV3Interface.sol";
 import "./Verifier.sol";
 
 contract BeTrusty {
-    AggregatorV3Interface internal dataFeed;
-    IERC20 internal token;
+    AggregatorV3Interface internal dataFeed;    
     Verifier internal verifier;
     uint256 public immutable PRICE_PROOF_ONCHAIN = 20e18; // equivale a 20
     address public owner;
@@ -26,10 +24,9 @@ contract BeTrusty {
     // Scroll Seplia Address
     // ETH/USD 0x59F1ec1f10bD7eD9B938431086bC1D9e233ECf41
     // Verificar en : https://docs.chain.link/data-feeds/price-feeds/addresses?network=scroll&page=1
-    constructor(address _verifier, address _token, address _feed) {
-        dataFeed = AggregatorV3Interface(_feed);
-        verifier = Verifier(_verifier);
-        token = IERC20(_token);
+    constructor(address _dataFeed, address _verifier) {
+        dataFeed = AggregatorV3Interface(_dataFeed);
+        verifier = Verifier(_verifier);        
         owner = msg.sender;
     }
 
@@ -41,7 +38,7 @@ contract BeTrusty {
         return verifier.verifyProof(proof.a, proof.b, proof.c, pubSignals);
     }
 
-    // Función para solo validar la prueba
+    // Función para validar si la prueba esta nulificada
     function isProofNullified(
         uint[1] memory pubSignals
     ) external view returns (bool) {
@@ -54,8 +51,7 @@ contract BeTrusty {
         Proof memory proof,
         uint[1] memory pubSignals
     ) external payable {
-        require(!s_nullifierHash[pubSignals[0]], "Already nullified!");
-        //uint256 requiredETH = calculateRequiredETH();
+        require(!s_nullifierHash[pubSignals[0]], "Already nullified!");        
         require(msg.value >= calculateRequiredETH(), "Insufficient ETH sent");
         require(
             verifier.verifyProof(proof.a, proof.b, proof.c, pubSignals),
@@ -88,14 +84,17 @@ contract BeTrusty {
         return answer;
     }
 
+    // Funcion para remover la prueba del nullifier
     function undoNullified(uint[1] memory pubSignals) external onlyOwner {
         s_nullifierHash[pubSignals[0]] = false;
     }
 
+    // Funcion para actualizar el verifier
     function updateVerifier(address _verifier) external onlyOwner {
         verifier = Verifier(_verifier);
     }
 
+    // Funcion para cambiar el owner
     function changeOwner(address _newOwner) external onlyOwner {
         owner = _newOwner;
     }
